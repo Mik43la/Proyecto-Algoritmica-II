@@ -1,1 +1,0 @@
-{0:"La Paz", 1:"Santa Cruz", 2:"Cochabamba", 3:"Sucre", 4:"Oruro", 5:"Tarija", 6:"Beni", 7:"Potosi", 8:"Pando"}
