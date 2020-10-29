@@ -1,3 +1,4 @@
+import ast
 from collections import deque, namedtuple
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -69,8 +70,14 @@ class Graph:
 
 
 G = nx.Graph()
-cities = {0:"La Paz",1:"Santa Cruz",2:"Cochabamba",3:"Sucre",4:"Oruro",5:"Tarija",6:"Beni",7:"Potosi",8:"Pando"}
 
+rf = open("cities.txt", "r")
+cities =ast.literal_eval( rf.read())
+rf.close()
+rf = open("coordinates.txt", "r")
+pos=ast.literal_eval(rf.read())
+rf.close()
+print(type(cities))
 rf = open("text.txt", "r")
 
 n, m = map(int, rf.readline().split())
@@ -83,9 +90,10 @@ for i in range(m):
 
 g.KruskalMST()
 G = nx.relabel_nodes(G, cities, copy=False)
-pos = nx.circular_layout(G)
+
 nx.draw_networkx(G, pos)
 labels = nx.get_edge_attributes(G, 'weight')
 nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
 
 plt.show()
+
