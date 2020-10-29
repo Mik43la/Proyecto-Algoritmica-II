@@ -75,7 +75,7 @@ rf = open("text.txt", "r")
 
 n, m = map(int, rf.readline().split())
 
-g = Graph(n)
+g = Graph(n + 1)# n+1 para que los txt coincidan
 
 for i in range(m):
     a, b, peso = map(int, rf.readline().split())
