@@ -61,12 +61,12 @@ node = 5
 
 dijkstra(node)
 
-for i in range(0, n ):
+for i in range(0, n +1):
    
     print('[ ', end='')
     print(distances[i], end=' ]')
 
-for a in range( n ):
+for a in range( n+1 ):
     G.add_edge(node, a, weight=distances[a])
     G[node][a]['weight'] = distances[a]
 
