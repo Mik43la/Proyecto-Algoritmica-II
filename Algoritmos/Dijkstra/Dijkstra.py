@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import heapq as hq
 import math
 import heapq
+import ast
 
 INF = 100000010
 SIZE = 100000 + 1
@@ -11,7 +12,11 @@ distances = [INF] * SIZE
 visited = [False] * SIZE
 vertex = [[] for i in range(SIZE)]
 road = [0] * SIZE
-cities = {0:"La Paz",1:"Santa Cruz",2:"Cochabamba",3:"Sucre",4:"Oruro",5:"Tarija",6:"Beni",7:"Potosi",8:"Pando"}
+
+rf = open("cities.txt", "r")
+cities =ast.literal_eval( rf.read())
+rf.close()
+#print(type(cities))
 G = nx.Graph()
 
 
@@ -42,7 +47,6 @@ def dijkstra(initialNode):
 
 #############
 rf = open("text.txt", "r")
-cities = {0:"La Paz",1:"Santa Cruz",2:"Cochabamba",3:"Sucre",4:"Oruro",5:"Tarija",6:"Beni",7:"Potosi",8:"Pando"}
 
 n, m = map(int, rf.readline().split())
 
@@ -52,16 +56,19 @@ for i in range(m):
     vertex[a].append((peso, b))
 
     vertex[b].append((peso, a))
+    
+node = 5
 
-dijkstra(4)
+dijkstra(node)
 
-for i in range(1, n + 1):
+for i in range(0, n ):
+   
     print('[ ', end='')
     print(distances[i], end=' ]')
 
-for i in range(1, n + 1):
-    G.add_edge(i, road[i], weight=distances[i])
-    G[i][road[i]]['weight'] = distances[i]
+for a in range( n ):
+    G.add_edge(node, a, weight=distances[a])
+    G[node][a]['weight'] = distances[a]
 
 G = nx.relabel_nodes(G, cities, copy=False)
 pos = nx.circular_layout(G)
