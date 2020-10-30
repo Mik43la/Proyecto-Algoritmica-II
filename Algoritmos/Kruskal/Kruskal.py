@@ -77,7 +77,7 @@ rf.close()
 rf = open("coordinates.txt", "r")
 pos=ast.literal_eval(rf.read())
 rf.close()
-print(type(cities))
+
 rf = open("text.txt", "r")
 
 n, m = map(int, rf.readline().split())
@@ -90,10 +90,14 @@ for i in range(m):
 
 g.KruskalMST()
 G = nx.relabel_nodes(G, cities, copy=False)
+img = plt.imread("mapBolivia.jpg")
+fig, ax = plt.subplots(figsize=(15,15))
 
-nx.draw_networkx(G, pos)
+ax.imshow(img, extent=[-100,10,-100,10])
+
+nx.draw_networkx(G, pos, width=2)
 labels = nx.get_edge_attributes(G, 'weight')
-nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+nx.draw_networkx_edge_labels(G, pos,edge_labels=labels,rotate=True)
+
 
 plt.show()
-
