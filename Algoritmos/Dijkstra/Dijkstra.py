@@ -16,7 +16,12 @@ road = [0] * SIZE
 rf = open("cities.txt", "r")
 cities =ast.literal_eval( rf.read())
 rf.close()
-#print(type(cities))
+
+
+rf = open("coordinates.txt", "r")
+pos=ast.literal_eval(rf.read())
+rf.close()
+
 G = nx.Graph()
 
 
@@ -56,23 +61,28 @@ for i in range(m):
     vertex[a].append((peso, b))
 
     vertex[b].append((peso, a))
-    
-node = 5
+
+node = 0
 
 dijkstra(node)
 
 for i in range(0, n +1):
-   
+
     print('[ ', end='')
     print(distances[i], end=' ]')
 
-for a in range( n+1 ):
+for a in range( n +1):
     G.add_edge(node, a, weight=distances[a])
     G[node][a]['weight'] = distances[a]
 
 G = nx.relabel_nodes(G, cities, copy=False)
-pos = nx.circular_layout(G)
-nx.draw_networkx(G, pos, node_color="cyan", node_size=1050, with_labels=True)
+
+img = plt.imread("mapBolivia.jpg")
+fig, ax = plt.subplots(figsize=(15,15))
+
+ax.imshow(img, extent=[-100,10,-100,10])
+
+nx.draw_networkx(G, pos, node_color="cyan", node_size=1050, width= 1,with_labels=True)
 labels = nx.get_edge_attributes(G, 'weight')
 nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
 plt.show()
