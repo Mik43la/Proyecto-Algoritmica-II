@@ -1,8 +1,10 @@
+import ast
 import networkx as nx
 import matplotlib.pyplot as plt
 INF = 100000001
 MAX_N = 10
 grafo = [[-1]* MAX_N for i in range(MAX_N)]
+
 
 # s = source, t = sink
 def maxFlow(s,t):
@@ -25,7 +27,7 @@ def maxFlow(s,t):
                     queue.insert(0,i)
 
         minFlow = INF
-       
+
         if path[t] == -1:
             break
 
@@ -46,19 +48,27 @@ def maxFlow(s,t):
 
         maxFlow += minFlow
         print(path)
-        G.clear()
+        rf = open("coordinates.txt", "r")
+        pos = ast.literal_eval(rf.read())
+        rf = open("cities.txt", "r")
+        cities = ast.literal_eval(rf.read())
 
         for ind in range(len(path)):
             if path[ind] is not -1:
                 G.add_edge(ind,path[ind])
+        nx.relabel_nodes(G, cities, copy= False)
 
-        pos = nx.kamada_kawai_layout(G)
+        rf.close()
+
+        img = plt.imread("mapBolivia.jpg")
+        fig, ax = plt.subplots(figsize=(15, 15))
+        
+        ax.imshow(img, extent=[-100, 10, -100, 10])
+
         nx.draw_networkx(G,pos)
-        nx.draw(G,pos, with_labels= True)
-            
+
         plt.show()
         G.clear()
-
 
 
     return maxFlow
@@ -75,4 +85,5 @@ for i in range(m):
     grafo[a][b] = capacity
     grafo[b][a] = 0
 
-print(maxFlow(1,8))
+print(maxFlow(0,8))
+
