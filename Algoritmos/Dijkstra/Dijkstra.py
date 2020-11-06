@@ -1,10 +1,9 @@
-from collections import deque, namedtuple
+
 import networkx as nx
 import matplotlib.pyplot as plt
-import heapq as hq
-import math
-import heapq
+import numpy as np
 import ast
+
 
 INF = 100000010
 SIZE = 100000 + 1
@@ -13,13 +12,16 @@ visited = [False] * SIZE
 vertex = [[] for i in range(SIZE)]
 road = [0] * SIZE
 
-rf = open("cities.txt", "r")
-cities =ast.literal_eval( rf.read())
+
+destiny = 30 ####
+
+rf = open("lugares.txt", "r")
+cities = ast.literal_eval(rf.read())
 rf.close()
 
 
-rf = open("coordinates.txt", "r")
-pos=ast.literal_eval(rf.read())
+rf = open("coordenadas.txt", "r")
+pos = ast.literal_eval(rf.read())
 rf.close()
 
 G = nx.Graph()
@@ -27,7 +29,7 @@ G = nx.Graph()
 
 def dijkstra(initialNode):
     distances[initialNode] = 0
-    s = [(0, initialNode)]
+    s = [(0,initialNode)]
 
     while len(s) is not 0:
 
@@ -46,23 +48,22 @@ def dijkstra(initialNode):
 
             if (distances[x] + weight) < distances[edge]:
                 road[edge] = x
+
                 distances[edge] = distances[x] + weight
                 s.append((distances[edge], edge))
 
 
 #############
-rf = open("text.txt", "r")
+rf = open("connections.txt", "r")
 
 n, m = map(int, rf.readline().split())
 
 for i in range(m):
-    a, b, peso = map(int, rf.readline().split())
+    a, b, peso = map(float, rf.readline().split())
+    vertex[int(a)].append((peso, int(b) ))
+    vertex[int(b)].append((peso, int(a) ))
 
-    vertex[a].append((peso, b))
-
-    vertex[b].append((peso, a))
-
-node = 0
+node = 8        # De donde empieza
 
 dijkstra(node)
 
@@ -71,20 +72,57 @@ for i in range(0, n +1):
     print('[ ', end='')
     print(distances[i], end=' ]')
 
-for a in range( n +1):
-    G.add_edge(node, a, weight=distances[a])
-    G[node][a]['weight'] = distances[a]
+print()
 
-G = nx.relabel_nodes(G, cities, copy=False)
+i = destiny
+while(i is not node):
+    print(road[i], end=" ")
+    formatted_weight = "{:.2f}".format(distances[i])
+    G.add_edge(road[i], i, weight=formatted_weight)
 
-img = plt.imread("mapBolivia.jpg")
+
+    G[road[i]][i]['weight'] = formatted_weight
+    i = road[i]
+
+img = plt.imread("MapaCarreteraBolivia.PNG")
 fig, ax = plt.subplots(figsize=(15,15))
 
-ax.imshow(img, extent=[-100,10,-100,10])
+ax.imshow(img, extent=[-150,200,-150,200], alpha=0.7, resample=False)
 
-nx.draw_networkx(G, pos, node_color="cyan", node_size=1050, width= 1,with_labels=True)
+
+list_of_nodes = list(G.nodes())
+
+new_dict = "{"
+new_pos ="{"
+
+for i in range(G.number_of_nodes()):
+    new_dict += str(list_of_nodes[i]) + ':"' + str(cities.get(list_of_nodes[i])) + '",'
+    new_pos += "\"" + str(cities.get(list_of_nodes[i])) + "\":" + str(pos.get(cities.get(list_of_nodes[i]))) + ','
+
+new_dict+= "}"
+new_pos+= '}'
+
+
+dicty = ast.literal_eval(new_dict)
+poss = ast.literal_eval(new_pos)
+
+
+nx.relabel_nodes(G, mapping=dicty, copy=False)
+
 labels = nx.get_edge_attributes(G, 'weight')
-nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+
+# G.remove_node('None')
+
+
+nx.draw_networkx(G, poss,with_labels=True, node_color="cyan", node_size=80, width=1)
+
+
+labels = nx.get_edge_attributes(G, 'weight')
+nx.draw_networkx_edge_labels(G,poss,edge_labels=labels, font_size=7)
+
+plt.savefig("path_Dijkstra.png")
+
 plt.show()
+
 
 rf.close()
