@@ -126,7 +126,8 @@ def deleteRute(nodeO, nodeD):
             nodeA, nodeB, weight = map(float, line.split())
             nodeA = int(nodeA)
             nodeB = int(nodeB)
-            if int(nodeA) is not indexO or int(nodeB) is not indexD:
+            if int(nodeA) is not indexO or int(nodeB) is not indexD and\
+                (int(nodeA) is not indexD or int(nodeB) is not indexO):
                 copyconnect.write(line)
 
 
