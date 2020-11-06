@@ -1,8 +1,6 @@
 # Proyecto-Algoritmica-II
+- Descargar librerias matplotlib.pyplot, networkx
+- Descargar fondo_caminos.jpeg
+- Descargar MapaCarreteraBolivia.PNG
+- Solo hacer correr el main
 
-- descargar fondo_caminos.jpeg
-- descargar MapaCarreteraBolivia.PNG
--solo hacer correr el main
-
-- pagina de donde se saco los datos:
-https://www.geodatos.net/
