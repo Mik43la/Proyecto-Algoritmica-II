@@ -8,13 +8,6 @@ MAX_N = 200
 grafo = [[-1] * MAX_N for i in range(MAX_N)]
 flux = [0] * MAX_N  ############
 global G
-rf = open("coordenadas.txt", "r")
-pos = ast.literal_eval(rf.read())
-rf = open("lugares.txt", "r")
-cities = ast.literal_eval(rf.read())
-rf.close()
-
-G = nx.Graph()
 
 
 # s = source, t = sink
@@ -75,7 +68,15 @@ def maxFlow(s, t):
 
 def main():
     global G
-    rf = open("connections.txt", "r")
+
+    rf = open("copyCoords.txt", "r")
+    pos = ast.literal_eval(rf.read())
+    rf = open("copyLugares.txt", "r")
+    cities = ast.literal_eval(rf.read())
+    rf.close()
+
+    G = nx.Graph()
+    rf = open("copyconnect.txt", "r")
 
     n, m = map(int, rf.readline().split())
 
@@ -119,4 +120,4 @@ def main():
     #
     plt.savefig("path_Edmonds.png")
 
-    #plt.show()
+    # plt.show()
