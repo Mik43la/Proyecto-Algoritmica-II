@@ -17,6 +17,7 @@ class Graph:
         self.graph.append([u, v, w])
 
     def find(self, parent, i):
+        
         if parent[i] == i:
             return i
         return self.find(parent, parent[i])
