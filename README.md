@@ -1,5 +1,5 @@
 
-# Proyecto-Algoritmica-II-Caminos.Bolivia
+# Proyecto-Algoritmica-II-Caminos_Bolivia
 
 _Este es un projecto de algoritmica-II de la Universidad Privada Boliviana(UPB), se usan algoritmos aprendidos en el curso para dar los mejores caminos, caminos mas cortos y carreteras mas usadas_
 
