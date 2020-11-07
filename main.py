@@ -295,12 +295,16 @@ def dijkstra():
 
 
 def menu():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window,lugar_y_texto_nodos,lugar_y_texto_aristas
+
     e.destroy()
     picture = 'fondo_caminos.jpg'
     e = Example(window)
     e.pack(fill=BOTH, expand=YES)
 
+    lugar_y_texto_nodos = 110
+    lugar_y_texto_aristas = 380
+    init_Texts()
     # botones
     poner_botones()
     listaLugares()
@@ -396,7 +400,7 @@ def listaLugares():
     combo_caminoB = Combobox(window)
     combo_caminoB.place(x=800, y=450, width=150, height=30)
     combo_caminoB['values'] = lugares
-    combo_caminoB.current(26)  # set the selected item / 32 11 14
+    combo_caminoB.current(26)  # set the selected item
 
     # nodo destino y nodo inicio
     combo_nodo_inicio = Combobox(window)
