@@ -12,7 +12,7 @@ vertex = [[] for i in range(SIZE)]
 road = [0] * SIZE
 
 
-destiny = 30 ####
+
 
 global G
 
@@ -46,7 +46,7 @@ def dijkstra(initialNode):
 
 
 #############
-def main():
+def main(s, t):
     global G
 
     rf = open("copyLugares.txt", "r")
@@ -67,7 +67,8 @@ def main():
         vertex[int(a)].append((peso, int(b)))
         vertex[int(b)].append((peso, int(a)))
 
-    node = 8  # De donde empieza
+    node = s  # De donde empieza
+    destiny = t # Destino
 
     dijkstra(node)
 
