@@ -103,7 +103,7 @@ def deleteNode(nombres_ciudades):
                     n, m = map(int, string_line.split() )
 
                     flag = 1
-                    print(n,m)
+                    # print(n,m)
                     continue
 
                 nodeA, nodeB, weight = map(float, line.split())
@@ -138,7 +138,7 @@ def deleteNode(nombres_ciudades):
                 stringC = str(n) + " " + str(m)+ "\n"
                 copy.write(stringC)
                 first = 1
-                print(stringC)
+                # print(stringC)
             else:
                 copy.write(line)
     copy.close()
