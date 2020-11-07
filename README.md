@@ -37,7 +37,6 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 * [Tkinter](sudo apt-get install python3-tk) - Usado para generar la interfaz grafica
 * [Matploit](python -m pip install -U matplotlib) - Usado para mostrar los grafos
 * [Networkx](pip install git://github.com/networkx/networkx.git#egg=networkx) - Usado para generar los grafos
-* [Networkx](pip install git://github.com/networkx/networkx.git#egg=networkx) - Usado para generar los grafos
 * [PIP](pip install PIL) - Usado para generar los grafos
 
 
