@@ -4,10 +4,7 @@
 _Este es un projecto de algoritmica-II de la Universidad Privada Boliviana(UPB), se usan algoritmos aprendidos en el curso para dar los mejores caminos, caminos mas cortos y carreteras mas usadas_
 
 
--informe:
-```
-https://drive.google.com/file/d/1K710kI7eJ1T26TwiMWaquF71ieetX34w/view?usp=sharing```
-```
+[Informe](https://drive.google.com/file/d/1K710kI7eJ1T26TwiMWaquF71ieetX34w/view?usp=sharing)
 
 
 
