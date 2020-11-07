@@ -1,19 +1,20 @@
+import ast
+from tkinter.ttk import Combobox
+
 import Dijkstra
 import Edmonds_Karp
 import Kruskal
-import ast
+
 from tkinter import *
 
 from PIL import Image, ImageTk
 
-global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
+global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, n
+n = 110
+m = 380
 
-root = Tk()
-root.title("Caminos Bolivia")
-root.geometry('1366x768')  # tamaño de la pantalla
-root.configure(background="black")
-
-
+global deleted_amount
+deleted_amount = 0
 class Example(Frame):
     global picture
 
@@ -42,70 +43,8 @@ class Example(Frame):
         self.background.configure(image=self.background_image)
 
 
-def borrar_botones():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
-
-    boton_edmonds.place_forget()
-    boton_kruskal.place_forget()
-    boton_dijkstra.place_forget()
-
-
-def poner_botones():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
-
-    boton_kruskal = Button(root, text="kruskal", command=kruskal, bg="black", fg="white")
-    boton_kruskal.place(x=580, y=100, width=200, height=40)
-    boton_edmonds = Button(root, text="edmonds", command=edmonds, bg="black", fg="white")
-    boton_edmonds.place(x=580, y=40, width=200, height=40)
-    boton_dijkstra = Button(root, text="dijkstra", command=dijkstra, bg="black", fg="white")
-    boton_dijkstra.place(x=580, y=150, width=200, height=40)
-
-
-def kruskal():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
-
-
-    Kruskal.main()
-    e.destroy()
-    borrar_botones()
-    e.pack_forget
-    picture = 'path_Kruskal.png'
-    e = Example(root)
-    e.pack(fill=BOTH, expand=YES)
-    boton_atras = Button(root, text="atras", command=menu, bg="black", fg="white")
-    boton_atras.place(x=0, y=0, width=100, height=30)
-
-
-def edmonds():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
-
-
-    Edmonds_Karp.main()
-
-    e.destroy()
-    borrar_botones()
-    picture = 'path_Edmonds.png'
-    e = Example(root)
-    e.pack(fill=BOTH, expand=YES)
-    boton_atras = Button(root, text="atras", command=menu, bg="black", fg="white")
-    boton_atras.place(x=0, y=0, width=100, height=30)
-
-
-def dijkstra():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
-
-    Dijkstra.main()
-    e.destroy()
-    borrar_botones()
-    picture = 'path_Dijkstra.png'
-    e = Example(root)
-    e.pack(fill=BOTH, expand=YES)
-    boton_atras = Button(root, text="atras", command=menu, bg="black", fg="white")
-    boton_atras.place(x=0, y=0, width=100, height=30)
-
-
 def deleteRute(nodeO, nodeD):
-    rf = open("lugares.txt", "r")
+    rf = open("copyLugares.txt", "r")
     cities = ast.literal_eval(rf.read())
     rf.close()
 
@@ -117,7 +56,7 @@ def deleteRute(nodeO, nodeD):
         copyconnect = open("copyconnect.txt", "w")
         for line in openfileobject:
 
-            if flag is not 1:
+            if flag != 1:
                 copyconnect.write(line)
                 # number_of_nodes, number_of_edges = map(int, line.split())
                 flag = 1
@@ -126,10 +65,9 @@ def deleteRute(nodeO, nodeD):
             nodeA, nodeB, weight = map(float, line.split())
             nodeA = int(nodeA)
             nodeB = int(nodeB)
-            if int(nodeA) is not indexO or int(nodeB) is not indexD and\
-                (int(nodeA) is not indexD or int(nodeB) is not indexO):
+            if int(nodeA) is not indexO or int(nodeB) is not indexD and \
+                    (int(nodeA) is not indexD or int(nodeB) is not indexO):
                 copyconnect.write(line)
-
 
         copyconnect.close()
 
@@ -137,13 +75,18 @@ def deleteRute(nodeO, nodeD):
 
 
 def deleteNode(nombres_ciudades):
-    rf = open("lugares.txt", "r")
+    global deleted_amount
+    rf = open("copyLugares.txt", "r")
     cities = ast.literal_eval(rf.read())
     rf.close()
-    rf = open("coordenadas.txt", "r")
+    rf = open("copyCoords.txt", "r")
     coords = ast.literal_eval(rf.read())
     rf.close()
-
+   # print(type(nombres_ciudades))
+  #  print(cities)
+    conexiones_eliminadas = 0
+    m = 0
+    nodos_eliminados = len(nombres_ciudades)
     for i in range(len(nombres_ciudades)):
 
         index = list(cities.keys())[list(cities.values()).index(nombres_ciudades[i])]
@@ -151,20 +94,25 @@ def deleteNode(nombres_ciudades):
         with open('connections.txt') as openfileobject:
             flag = 0
             copyconnect = open("copyconnect.txt", "w")
+
             for line in openfileobject:
 
                 if flag is not 1:
+                    string_line = line
                     copyconnect.write(line)
+                    n, m = map(int, string_line.split() )
+
                     flag = 1
+                    print(n,m)
                     continue
 
                 nodeA, nodeB, weight = map(float, line.split())
                 nodeA = int(nodeA)
                 nodeB = int(nodeB)
                 if nodeA is not index and nodeB is not index:
-
                     copyconnect.write(line)
-
+                else:
+                    conexiones_eliminadas += 1
 
         copyconnect.close()
         openfileobject.close()
@@ -172,7 +120,28 @@ def deleteNode(nombres_ciudades):
         cities.__delitem__(index)
 
         coords.__delitem__(nombres_ciudades[i])
+    #deleting_nodes += conexiones_eliminadas
+    deleted_amount += conexiones_eliminadas
+    m = m - deleted_amount
 
+    # n = n - nodos_eliminados
+    rf = open("copyconnect.txt", "r")
+    file = rf.read()
+    rf = open("quickfile.txt", "w")
+    rf.write(file)
+    rf.close()
+    with open("quickfile.txt") as openfile:
+        first = 0
+        copy = open("copyconnect.txt", "w")
+        for line in openfile:
+            if first is 0:
+                stringC = str(n) + " " + str(m)+ "\n"
+                copy.write(stringC)
+                first = 1
+                print(stringC)
+            else:
+                copy.write(line)
+    copy.close()
     #
     rf = open("copyLugares.txt", "w")
     st_cities = str(cities)
@@ -180,7 +149,12 @@ def deleteNode(nombres_ciudades):
     rf = open("copyCoords.txt", "w")
     st_coords = str(coords)
     rf.write(st_coords)
+
+    # rf = open("copyconnect.txt", "r")
+    # r= rf.read()
+    # print(r)
     rf.close()
+
 
 def init_Texts():
 
@@ -201,28 +175,197 @@ def init_Texts():
 
     rf.close()
 
-def menu():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
+
+def borrar_botones():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+
+    boton_edmonds.place_forget()
+    boton_kruskal.place_forget()
+    boton_dijkstra.place_forget()
+
+
+def poner_botones():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, n
+
+    boton_kruskal = Button(window, text="kruskal", command=kruskal, bg="black", fg="white")
+    boton_kruskal.place(x=180, y=100, width=200, height=40)
+    boton_edmonds = Button(window, text="edmonds", command=edmonds, bg="black", fg="white")
+    boton_edmonds.place(x=180, y=200, width=200, height=40)
+    boton_dijkstra = Button(window, text="dijkstra", command=dijkstra, bg="black", fg="white")
+    boton_dijkstra.place(x=180, y=300, width=200, height=40)
+    # botones de eliminar
+    boton_eliminar_nodo = Button(window, text="Eliminar lugar", command=eliminarNodo, bg="grey", fg="white")
+    boton_eliminar_nodo.place(x=800, y=130, width=150, height=40)
+    boton_eliminar_nodo = Button(window, text="Eliminar Carretera", command=eliminarArista, bg="grey", fg="white")
+    boton_eliminar_nodo.place(x=800, y=500, width=150, height=40)
+
+
+def eliminarNodo():
+    global window, combo_nodos, combo_caminoA, combo_caminoB, n
+
+    lista_nodos = []
+    lista_nodos.append(combo_nodos.get())
+    deleteNode(lista_nodos)
+    lblnodo = Label(window, text=combo_nodos.get())
+    lblnodo.place(x=1000, y=n, width=200, height=40)
+    n += 30
+
+
+def eliminarArista():
+    global window, combo_nodos, combo_caminoA, combo_caminoB, m
+
+    deleteRute(combo_caminoA.get(), combo_caminoB.get())
+    texto = combo_caminoA.get() + "-" + combo_caminoB.get()
+    lblaArista = Label(window, text=texto)
+    lblaArista.place(x=1000, y=m, width=200, height=40)
+    m += 30
+
+
+def kruskal():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+
+    Kruskal.main()
+    e.destroy()
+    borrar_botones()
+    e.pack_forget
+    picture = 'path_Kruskal.png'
+    e = Example(window)
+    e.pack(fill=BOTH, expand=YES)
+    boton_atras = Button(window, text="atras", command=menu, bg="black", fg="white")
+    boton_atras.place(x=0, y=0, width=100, height=30)
+
+
+def edmonds():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+
+    Edmonds_Karp.main()
 
     e.destroy()
+    borrar_botones()
+    picture = 'path_Edmonds.png'
+    e = Example(window)
+    e.pack(fill=BOTH, expand=YES)
+    boton_atras = Button(window, text="atras", command=menu, bg="black", fg="white")
+    boton_atras.place(x=0, y=0, width=100, height=30)
+
+
+def dijkstra():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+
+    Dijkstra.main()
+    e.destroy()
+    borrar_botones()
+    picture = 'path_Dijkstra.png'
+    e = Example(window)
+    e.pack(fill=BOTH, expand=YES)
+    boton_atras = Button(window, text="atras", command=menu, bg="black", fg="white")
+    boton_atras.place(x=0, y=0, width=100, height=30)
+
+
+def menu():
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+    e.destroy()
     picture = 'fondo_caminos.jpg'
-    e = Example(root)
+    e = Example(window)
     e.pack(fill=BOTH, expand=YES)
 
     # botones
     poner_botones()
+    listaLugares()
+
+    # Letras
+    lbl = Label(window, text="Lugares a eliminar")
+    lbl.place(x=1000, y=80, width=200, height=40)
+
+    lbl = Label(window, text="carreteras a eliminar")
+    lbl.place(x=1000, y=350, width=200, height=40)
 
 
 def main():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, value_window, combo
+    valueWindow()
+    aplicacion(value_window)
+
+
+def aplicacion(value_window):
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, combo
+
+    window = Tk()
+    window.title("Caminos Bolivia")
+    window.geometry(value_window)  # tamaño de la pantalla
+    window.configure(background="black")
 
     picture = 'fondo_caminos.jpg'
-    e = Example(root)
+    e = Example(window)
     e.pack(fill=BOTH, expand=YES)
 
     # botones
     poner_botones()
+    listaLugares()
+
+    # Letras
+    lbl = Label(window, text="Lugares a eliminar")
+    lbl.place(x=1000, y=80, width=200, height=40)
+
+    lbl = Label(window, text="carreteras a eliminar")
+    lbl.place(x=1000, y=350, width=200, height=40)
+
+    window.mainloop()
 
 
+def valueWindow():
+    global value_window, combo
+
+    def borrarVentana():
+        global value_window, combo
+        value_window = combo.get()
+        root.destroy()
+
+    root = Tk()
+
+    root.title("")
+
+    root.geometry('350x200')
+
+    lbl = Label(root, text="Tamaño de la pantalla:")
+    lbl.place(x=80, y=2, width=200, height=40)
+
+    combo = Combobox(root)
+    combo['values'] = ('1280x720', '1366x768', '1440x900', '1680x1050', '1920x1200', '256x1440', '2560x1600')
+    combo.current(1)  # set the selected item
+    combo.place(x=80, y=40, width=200, height=40)
+
+    boton_tamaño = Button(root, text="aceptar", command=borrarVentana)
+    boton_tamaño.place(x=80, y=100, width=200, height=40)
+
+    root.mainloop()
+
+
+def listaLugares():
+    global window, combo_nodos, combo_caminoA, combo_caminoB
+    f = open('listaLugares.txt', 'r')
+    lugares = []
+
+
+    for line in f:
+        lugares.append(line.strip())
+
+    f.close()
+
+    combo_nodos = Combobox(window)
+    combo_nodos.place(x=800, y=80, width=150, height=30)
+    combo_nodos['values'] = lugares
+    combo_nodos.current(0)  # set the selected item
+
+    combo_caminoA = Combobox(window)
+    combo_caminoA.place(x=800, y=400, width=150, height=30)
+    combo_caminoA['values'] = lugares
+    combo_caminoA.current(0)  # set the selected item
+
+    combo_caminoB = Combobox(window)
+    combo_caminoB.place(x=800, y=450, width=150, height=30)
+    combo_caminoB['values'] = lugares
+    combo_caminoB.current(0)  # set the selected item
+
+init_Texts()
 main()
-root.mainloop()
