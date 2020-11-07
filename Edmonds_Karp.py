@@ -66,7 +66,7 @@ def maxFlow(s, t):
     return maxFlow
 
 
-def main():
+def main(s, t):
     global G
 
     rf = open("copyCoords.txt", "r")
@@ -85,7 +85,7 @@ def main():
         grafo[int(a)][int(b)] = capacity
         grafo[int(b)][int(a)] = capacity
 
-    print(maxFlow(0, 5))  #########
+    print(maxFlow(s, t))  #########
     # print(G.nodes())
 
     img = plt.imread("MapaCarreteraBolivia.PNG")
