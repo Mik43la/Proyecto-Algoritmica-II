@@ -21,7 +21,7 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 ### Instalación 🔧
 
 ```
-sudo cd ~Downloads/git; git clone --branch GUI https://github.com/Mik43la/Proyecto-Algoritmica-II.git
+sudo cd ~Downloads/git; git clone https://github.com/Mik43la/Proyecto-Algoritmica-II.git
 ```
 
 
