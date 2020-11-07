@@ -14,19 +14,12 @@ road = [0] * SIZE
 
 destiny = 30 ####
 
-rf = open("copyLugares.txt", "r")
-cities = ast.literal_eval(rf.read())
-rf.close()
-
-
-rf = open("copyCoords.txt", "r")
-pos = ast.literal_eval(rf.read())
-rf.close()
-
-G = nx.Graph()
+global G
 
 
 def dijkstra(initialNode):
+    global G
+
     distances[initialNode] = 0
     s = [(0,initialNode)]
 
@@ -54,16 +47,34 @@ def dijkstra(initialNode):
 
 #############
 def main():
+    global G
+
+    rf = open("copyLugares.txt", "r")
+    cities = ast.literal_eval(rf.read())
+    rf.close()
+
+    rf = open("copyCoords.txt", "r")
+    pos = ast.literal_eval(rf.read())
+    rf.close()
+
+    G = nx.Graph()
+    #rf = open("copyconnect.txt", "r")
+   # d = rf.read()
+   # print("lol")
+   # print(d)
     rf = open("copyconnect.txt", "r")
-
+    p = rf.read()
+    print(p)
+    rf = open("copyconnect.txt", "r")
     n, m = map(int, rf.readline().split())
-
+    #print(m)
     for i in range(m):
         a, b, peso = map(float, rf.readline().split())
+        #print(a,b,peso)
         vertex[int(a)].append((peso, int(b)))
         vertex[int(b)].append((peso, int(a)))
 
-    node = 8  # De donde empieza
+    node = 10  # De donde empieza
 
     dijkstra(node)
 
