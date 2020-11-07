@@ -396,7 +396,7 @@ def listaLugares():
     combo_caminoB = Combobox(window)
     combo_caminoB.place(x=800, y=450, width=150, height=30)
     combo_caminoB['values'] = lugares
-    combo_caminoB.current(1)  # set the selected item
+    combo_caminoB.current(26)  # set the selected item / 32 11 14
 
     # nodo destino y nodo inicio
     combo_nodo_inicio = Combobox(window)
