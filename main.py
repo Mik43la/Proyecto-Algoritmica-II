@@ -216,12 +216,12 @@ def poner_botones():
     global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, \
         boton_eliminar_arista, boton_eliminar_nodo, e, window, lugar_y_texto_nodos
 
-    boton_kruskal = Button(window, text="Caminos mas usasdos de Bolivia", command=kruskal, bg="black", fg="white")
-    boton_kruskal.place(x=180, y=100, width=200, height=40)
+    boton_kruskal = Button(window, text="Caminos mas usados de Bolivia", command=kruskal, bg="black", fg="white")
+    boton_kruskal.place(x=180, y=100, width=210, height=40)
     boton_edmonds = Button(window, text="poblaciones a evitar", command=edmonds, bg="black", fg="white")
-    boton_edmonds.place(x=180, y=200, width=200, height=40)
+    boton_edmonds.place(x=180, y=200, width=210, height=40)
     boton_dijkstra = Button(window, text="Camino mas corto", command=dijkstra, bg="black", fg="white")
-    boton_dijkstra.place(x=180, y=300, width=200, height=40)
+    boton_dijkstra.place(x=180, y=300, width=210, height=40)
     # botones de eliminar
     boton_eliminar_nodo = Button(window, text="Eliminar lugar", command=eliminarNodo, bg="grey", fg="white")
     boton_eliminar_nodo.place(x=800, y=130, width=150, height=40)
