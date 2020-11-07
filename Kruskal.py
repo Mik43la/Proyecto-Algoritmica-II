@@ -82,14 +82,14 @@ def main():
 
     G = nx.Graph()
 
-    rf = open("lugares.txt", "r")
+    rf = open("copyLugares.txt", "r")
     cities = ast.literal_eval(rf.read())
     rf.close()
-    rf = open("coordenadas.txt", "r")
+    rf = open("copyCoords.txt", "r")
     pos = ast.literal_eval(rf.read())
     rf.close()
 
-    rf = open("connections.txt", "r")
+    rf = open("copyconnect.txt", "r")
 
     n, m = map(int, rf.readline().split())
 
@@ -146,4 +146,3 @@ def main():
     plt.savefig("path_Kruskal.png")
 
     #plt.show()
-
