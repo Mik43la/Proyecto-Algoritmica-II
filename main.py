@@ -119,7 +119,6 @@ def deleteNode(nombres_ciudades):
 
 
 def init_Texts():
-
     rf = open("lugares.txt", "r")
     lugares = rf.read()
     rf = open("copyLugares.txt", "w")
@@ -138,16 +137,44 @@ def init_Texts():
     rf.close()
 
 
+def actualS():
+    global lugares, combo_nodo_inicio, s
+
+    with open('lugares.txt', 'r') as dict_file:
+        dict_text = dict_file.read()
+        diccionario = eval(dict_text)
+
+    for key in diccionario:  # binary search
+        if combo_nodo_inicio.get() == diccionario[key]:
+            s = key
+
+
+def actualT():
+    global lugares, combo_nodo_destino,t
+
+    with open('lugares.txt', 'r') as dict_file:
+        dict_text = dict_file.read()
+        diccionario = eval(dict_text)
+
+    for key in diccionario:  # binary search
+        if combo_nodo_destino.get() == diccionario[key]:
+            t = key
+
+
 def borrar_botones():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, \
+        boton_eliminar_arista, boton_eliminar_nodo, e, window
 
     boton_edmonds.place_forget()
     boton_kruskal.place_forget()
     boton_dijkstra.place_forget()
+    boton_eliminar_nodo.place_forget()
+    boton_eliminar_arista.place_forget()
 
 
 def poner_botones():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, n
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, \
+        boton_eliminar_arista, boton_eliminar_nodo, e, window, n
 
     boton_kruskal = Button(window, text="kruskal", command=kruskal, bg="black", fg="white")
     boton_kruskal.place(x=180, y=100, width=200, height=40)
@@ -158,12 +185,12 @@ def poner_botones():
     # botones de eliminar
     boton_eliminar_nodo = Button(window, text="Eliminar lugar", command=eliminarNodo, bg="grey", fg="white")
     boton_eliminar_nodo.place(x=800, y=130, width=150, height=40)
-    boton_eliminar_nodo = Button(window, text="Eliminar Carretera", command=eliminarArista, bg="grey", fg="white")
-    boton_eliminar_nodo.place(x=800, y=500, width=150, height=40)
+    boton_eliminar_arista = Button(window, text="Eliminar Carretera", command=eliminarArista, bg="grey", fg="white")
+    boton_eliminar_arista.place(x=800, y=500, width=150, height=40)
 
 
 def eliminarNodo():
-    global window, combo_nodos, combo_caminoA, combo_caminoB, n
+    global window, combo_nodos, combo_caminoA, combo_caminoB, n, combo_nodo_destino, combo_nodo_inicio
 
     lista_nodos = []
     lista_nodos.append(combo_nodos.get())
@@ -174,7 +201,7 @@ def eliminarNodo():
 
 
 def eliminarArista():
-    global window, combo_nodos, combo_caminoA, combo_caminoB, m
+    global window, combo_nodos, combo_caminoA, combo_caminoB, m, combo_nodo_destino, combo_nodo_inicio
 
     deleteRute(combo_caminoA.get(), combo_caminoB.get())
     texto = combo_caminoA.get() + "-" + combo_caminoB.get()
@@ -198,9 +225,11 @@ def kruskal():
 
 
 def edmonds():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window,  s, t
 
-    Edmonds_Karp.main()
+    actualS()
+    actualT()
+    Edmonds_Karp.main(s, t)
 
     e.destroy()
     borrar_botones()
@@ -212,9 +241,11 @@ def edmonds():
 
 
 def dijkstra():
-    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window
+    global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, s, t
 
-    Dijkstra.main()
+    actualS()
+    actualT()
+    Dijkstra.main(s, t)
     e.destroy()
     borrar_botones()
     picture = 'path_Dijkstra.png'
@@ -304,10 +335,9 @@ def valueWindow():
 
 
 def listaLugares():
-    global window, combo_nodos, combo_caminoA, combo_caminoB
+    global window, combo_nodos, combo_caminoA, combo_caminoB, combo_nodo_destino, combo_nodo_inicio, lugares
     f = open('listaLugares.txt', 'r')
     lugares = []
-
 
     for line in f:
         lugares.append(line.strip())
@@ -327,7 +357,25 @@ def listaLugares():
     combo_caminoB = Combobox(window)
     combo_caminoB.place(x=800, y=450, width=150, height=30)
     combo_caminoB['values'] = lugares
-    combo_caminoB.current(0)  # set the selected item
+    combo_caminoB.current(1)  # set the selected item
+
+    # nodo destino y nodo inicio
+    combo_nodo_inicio = Combobox(window)
+    combo_nodo_inicio.place(x=180, y=450, width=150, height=30)
+    combo_nodo_inicio['values'] = lugares
+    combo_nodo_inicio.current(0)  # set the selected item
+
+    combo_nodo_destino = Combobox(window)
+    combo_nodo_destino.place(x=180, y=550, width=150, height=30)
+    combo_nodo_destino['values'] = lugares
+    combo_nodo_destino.current(1)  # set the selected item
+    #LAbels nodos s y t
+    lblnodo = Label(window, text="lugar de partida")
+    lblnodo.place(x=330, y=450, width=150, height=30)
+
+    lblnodo = Label(window, text="lugar de destino")
+    lblnodo.place(x=330, y=550, width=150, height=30)
+
 
 init_Texts()
 main()
