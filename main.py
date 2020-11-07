@@ -9,10 +9,11 @@ from tkinter import *
 
 from PIL import Image, ImageTk
 
-global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, n
-n = 110
-m = 380
-
+global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, e, window, lugar_y_texto_nodos
+lugar_y_texto_nodos = 110
+lugar_y_texto_aristas = 380
+global deleted_amount
+deleted_amount = 0
 
 class Example(Frame):
     global picture
@@ -50,7 +51,7 @@ def deleteRute(nodeO, nodeD):
     indexO = list(cities.keys())[list(cities.values()).index(nodeO)]
     indexD = list(cities.keys())[list(cities.values()).index(nodeD)]
 
-    with open('copyconnect.txt') as openfileobject:
+    with open('connections.txt') as openfileobject:
         flag = 0
         copyconnect = open("copyconnect.txt", "w")
         for line in openfileobject:
@@ -74,25 +75,35 @@ def deleteRute(nodeO, nodeD):
 
 
 def deleteNode(nombres_ciudades):
+    global deleted_amount
     rf = open("copyLugares.txt", "r")
     cities = ast.literal_eval(rf.read())
     rf.close()
     rf = open("copyCoords.txt", "r")
     coords = ast.literal_eval(rf.read())
     rf.close()
-
+   # print(type(nombres_ciudades))
+  #  print(cities)
+    conexiones_eliminadas = 0
+    m = 0
+    nodos_eliminados = len(nombres_ciudades)
     for i in range(len(nombres_ciudades)):
 
         index = list(cities.keys())[list(cities.values()).index(nombres_ciudades[i])]
 
-        with open('copyconnect.txt') as openfileobject:
+        with open('connections.txt') as openfileobject:
             flag = 0
             copyconnect = open("copyconnect.txt", "w")
+
             for line in openfileobject:
 
                 if flag is not 1:
+                    string_line = line
                     copyconnect.write(line)
+                    n, m = map(int, string_line.split() )
+
                     flag = 1
+                    # print(n,m)
                     continue
 
                 nodeA, nodeB, weight = map(float, line.split())
@@ -100,6 +111,8 @@ def deleteNode(nombres_ciudades):
                 nodeB = int(nodeB)
                 if nodeA is not index and nodeB is not index:
                     copyconnect.write(line)
+                else:
+                    conexiones_eliminadas += 1
 
         copyconnect.close()
         openfileobject.close()
@@ -107,7 +120,28 @@ def deleteNode(nombres_ciudades):
         cities.__delitem__(index)
 
         coords.__delitem__(nombres_ciudades[i])
+    #deleting_nodes += conexiones_eliminadas
+    deleted_amount += conexiones_eliminadas
+    m = m - deleted_amount
 
+    # n = n - nodos_eliminados
+    rf = open("copyconnect.txt", "r")
+    file = rf.read()
+    rf = open("quickfile.txt", "w")
+    rf.write(file)
+    rf.close()
+    with open("quickfile.txt") as openfile:
+        first = 0
+        copy = open("copyconnect.txt", "w")
+        for line in openfile:
+            if first is 0:
+                stringC = str(n) + " " + str(m)+ "\n"
+                copy.write(stringC)
+                first = 1
+                # print(stringC)
+            else:
+                copy.write(line)
+    copy.close()
     #
     rf = open("copyLugares.txt", "w")
     st_cities = str(cities)
@@ -115,10 +149,15 @@ def deleteNode(nombres_ciudades):
     rf = open("copyCoords.txt", "w")
     st_coords = str(coords)
     rf.write(st_coords)
+
+    # rf = open("copyconnect.txt", "r")
+    # r= rf.read()
+    # print(r)
     rf.close()
 
 
 def init_Texts():
+
     rf = open("lugares.txt", "r")
     lugares = rf.read()
     rf = open("copyLugares.txt", "w")
@@ -174,7 +213,7 @@ def borrar_botones():
 
 def poner_botones():
     global picture, boton_kruskal, boton_edmonds, boton_dijkstra, boton_atras, \
-        boton_eliminar_arista, boton_eliminar_nodo, e, window, n
+        boton_eliminar_arista, boton_eliminar_nodo, e, window, lugar_y_texto_nodos
 
     boton_kruskal = Button(window, text="kruskal", command=kruskal, bg="black", fg="white")
     boton_kruskal.place(x=180, y=100, width=200, height=40)
@@ -190,24 +229,24 @@ def poner_botones():
 
 
 def eliminarNodo():
-    global window, combo_nodos, combo_caminoA, combo_caminoB, n, combo_nodo_destino, combo_nodo_inicio
+    global window, combo_nodos, combo_caminoA, combo_caminoB, lugar_y_texto_nodos, combo_nodo_destino, combo_nodo_inicio
 
     lista_nodos = []
     lista_nodos.append(combo_nodos.get())
     deleteNode(lista_nodos)
     lblnodo = Label(window, text=combo_nodos.get())
-    lblnodo.place(x=1000, y=n, width=200, height=40)
-    n += 30
+    lblnodo.place(x=1000, y=lugar_y_texto_nodos, width=200, height=40)
+    lugar_y_texto_nodos += 30
 
 
 def eliminarArista():
-    global window, combo_nodos, combo_caminoA, combo_caminoB, m, combo_nodo_destino, combo_nodo_inicio
+    global window, combo_nodos, combo_caminoA, combo_caminoB, lugar_y_texto_aristas, combo_nodo_destino, combo_nodo_inicio
 
     deleteRute(combo_caminoA.get(), combo_caminoB.get())
     texto = combo_caminoA.get() + "-" + combo_caminoB.get()
     lblaArista = Label(window, text=texto)
-    lblaArista.place(x=1000, y=m, width=200, height=40)
-    m += 30
+    lblaArista.place(x=1000, y=lugar_y_texto_aristas, width=200, height=40)
+    lugar_y_texto_aristas += 30
 
 
 def kruskal():
