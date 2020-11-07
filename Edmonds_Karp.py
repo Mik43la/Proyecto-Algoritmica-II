@@ -76,9 +76,9 @@ def main():
     rf.close()
 
     G = nx.Graph()
-    rf = open("copyconnect.txt", "r")
-    r = rf.read()
-    print(r)
+   # rf = open("copyconnect.txt", "r")
+   # r = rf.read()
+   # print(r)
     rf = open("copyconnect.txt", "r")
     n, m = map(int, rf.readline().split())
 
@@ -111,7 +111,7 @@ def main():
     poss = ast.literal_eval(new_pos)
 
     nx.relabel_nodes(G, dicty, copy=False)
-    print(poss)
+   # print(poss)
 
     G.remove_node('None')
     nx.draw_networkx(G, poss, node_color="cyan", node_size=80, width=1)
