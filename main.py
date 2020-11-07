@@ -119,17 +119,18 @@ def deleteNode(nombres_ciudades):
 
 
 def init_Texts():
-    rf = open("copyLugares.txt", "r")
+
+    rf = open("lugares.txt", "r")
     lugares = rf.read()
     rf = open("copyLugares.txt", "w")
     rf.write(lugares)
 
-    rf = open("copyCoords.txt", "r")
+    rf = open("coordenadas.txt", "r")
     coordenadas = rf.read()
     rf = open("copyCoords.txt", "w")
     rf.write(coordenadas)
 
-    rf = open("copyconnect.txt", "r")
+    rf = open("connections.txt", "r")
     conexiones = rf.read()
     rf = open("copyconnect.txt", "w")
     rf.write(conexiones)
@@ -328,5 +329,5 @@ def listaLugares():
     combo_caminoB['values'] = lugares
     combo_caminoB.current(0)  # set the selected item
 
-#init_Texts()
+init_Texts()
 main()
