@@ -1,9 +1,5 @@
-# Proyecto-Algoritmica-II
-- Descargar librerias matplotlib.pyplot, networkx
-- Descargar fondo_caminos.jpeg
-- Descargar MapaCarreteraBolivia.PNG
-- Solo hacer correr el main
-# Proyecto-Algoritmica-II
+
+# Proyecto-Algoritmica-II-Caminos.Bolivia
 
 _Este es un projecto de algoritmica-II de la Universidad Privada Boliviana(UPB), se usan algoritmos aprendidos en el curso para dar los mejores caminos, caminos mas cortos y carreteras mas usadas_
 
